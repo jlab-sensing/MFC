@@ -1,12 +1,11 @@
 #include "SDISerial.h"
 
 #define DATA_PIN 13
-#define INVERTED 1
 
 int sensorDelay = 1000;
 char *samples;
 
-SDISerial sdi_serial_connection(DATA_PIN, INVERTED);
+SDISerial sdi_serial_connection(DATA_PIN);
 
 void setup()
 {
