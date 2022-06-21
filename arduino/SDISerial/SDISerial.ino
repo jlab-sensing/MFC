@@ -2,6 +2,7 @@
 
 #define DATA_PIN 13
 
+
 int sensorDelay = 1000;
 char *samples;
 
@@ -9,8 +10,10 @@ SDISerial sdi_serial_connection(DATA_PIN);
 
 void setup()
 {
-  sdi_serial_connection.begin();
   Serial.begin(1200);
+  Serial.println("SDISerial, compiled on " __DATE__ " " __TIME__);
+
+  sdi_serial_connection.begin();
   delay(3000);
 }
 
@@ -18,10 +21,7 @@ void loop()
 {
   // take repeated samples
   samples = get_measurement();
-  while (strlen(samples) < 5)
-  {
-    samples = get_measurement();
-  }
+
   // Serial.print("samples(ADDR/RAW/TMP/EC): ");
   Serial.println(samples);
   // sdi_serial_connection.sdi_cmd("0A1!");// change address from 0 to 1
