@@ -1,12 +1,14 @@
 #include "SDISerial.h"
 
+// Max Delay between the measure and data collection
+#define SENSOR_DELAY 1000
+
 #define DATA_PIN 13
 
 // Array of addresses
 const char addrs[] = {'0', '1'};
 const unsigned int addrs_len = 2;
 
-int sensorDelay = 1000;
 char *samples;
 
 SDISerial sdi_serial_connection(DATA_PIN);
@@ -52,9 +54,9 @@ char * get_measurement(char _addr)
   sprintf(d_query, "%cD0!", _addr);
 
   // Query sensor 0
-  sdi_serial_connection.sdi_query(m_query, sensorDelay);
+  sdi_serial_connection.sdi_query(m_query, SENSOR_DELAY);
   // you can use the time returned above to wait for the service_request_complete
-  sdi_serial_connection.wait_for_response(sensorDelay);
+  sdi_serial_connection.wait_for_response(SENSOR_DELAY);
   // Get data from sensor
-  return (sdi_serial_connection.sdi_query(d_query, sensorDelay));
+  return (sdi_serial_connection.sdi_query(d_query, SENSOR_DELAY));
 }
