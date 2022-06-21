@@ -2,6 +2,9 @@
 
 #define DATA_PIN 13
 
+// Array of addresses
+const char addrs[] = {'0', '1'};
+const unsigned int addrs_len = 2;
 
 int sensorDelay = 1000;
 char *samples;
@@ -19,11 +22,12 @@ void setup()
 
 void loop()
 {
-  // take repeated samples
-  samples = get_measurement('0');
+  for (int i = 0; i < addrs_len; i++) {
+    samples = get_measurement(addrs[i]);
+    Serial.println(samples);
+  }
 
   // Serial.print("samples(ADDR/RAW/TMP/EC): ");
-  Serial.println(samples);
   // sdi_serial_connection.sdi_cmd("0A1!");// change address from 0 to 1
   delay(10000);
 }
