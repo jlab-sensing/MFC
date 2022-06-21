@@ -28,17 +28,18 @@ void loop()
   delay(10000);
 }
 
-char *get_measurement()
+/**
+ * @brief Get measurement from sensor at address
+ *
+ * @see https://github.com/joranbeasley/SDISerial/blob/master/examples/SDISerialExample/SDISerialExample.ino
+ * @return Single measurement
+ */
+char * get_measurement()
 {
-  // function by Joran Beasley: https://github.com/joranbeasley/SDISerial/blob/master/examples/SDISerialExample/SDISerialExample.ino
-  char *service_request = sdi_serial_connection.sdi_query("2M!", sensorDelay);
-  // you can use the time returned above to wait for the service_request_complete
-  char *service_request_complete = sdi_serial_connection.wait_for_response(sensorDelay);
-  // 1 second potential wait, but response is returned as soon as it's available
-  // Serial.print("samples(ADDR/RAW/TMP/EC): ");
-  Serial.println(sdi_serial_connection.sdi_query("2D0!", sensorDelay));
+  // Query sensor 0
   sdi_serial_connection.sdi_query("0M!", sensorDelay);
   // you can use the time returned above to wait for the service_request_complete
   sdi_serial_connection.wait_for_response(sensorDelay);
+  // Get data from sensor
   return (sdi_serial_connection.sdi_query("0D0!", sensorDelay));
 }
