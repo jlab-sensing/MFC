@@ -24,7 +24,7 @@ void loop()
 {
   for (int i = 0; i < addrs_len; i++) {
     char * samples = get_measurement(addrs[i]);
-    Serial.println(samples);
+    Serial.print(samples);
   }
 
   // Serial.print("samples(ADDR/RAW/TMP/EC): ");
