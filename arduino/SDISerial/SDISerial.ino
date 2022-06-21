@@ -20,7 +20,7 @@ void setup()
 void loop()
 {
   // take repeated samples
-  samples = get_measurement();
+  samples = get_measurement('0');
 
   // Serial.print("samples(ADDR/RAW/TMP/EC): ");
   Serial.println(samples);
@@ -30,16 +30,27 @@ void loop()
 
 /**
  * @brief Get measurement from sensor at address
+ * 
+ * @param _addr Address of sensor
  *
  * @see https://github.com/joranbeasley/SDISerial/blob/master/examples/SDISerialExample/SDISerialExample.ino
  * @return Single measurement
  */
-char * get_measurement()
+char * get_measurement(char _addr)
 {
+  // Measure query
+  char m_query[4];
+  // Data query
+  char d_query[5];
+
+  // Format query strings
+  sprintf(m_query, "%cM!", _addr);
+  sprintf(d_query, "%cD0!", _addr);
+
   // Query sensor 0
-  sdi_serial_connection.sdi_query("0M!", sensorDelay);
+  sdi_serial_connection.sdi_query(m_query, sensorDelay);
   // you can use the time returned above to wait for the service_request_complete
   sdi_serial_connection.wait_for_response(sensorDelay);
   // Get data from sensor
-  return (sdi_serial_connection.sdi_query("0D0!", sensorDelay));
+  return (sdi_serial_connection.sdi_query(d_query, sensorDelay));
 }
