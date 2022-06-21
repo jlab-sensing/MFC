@@ -3,6 +3,7 @@
 // Max Delay between the measure and data collection
 #define SENSOR_DELAY 1000
 
+// Pin for signal line (must be interrupt pin)
 #define DATA_PIN 13
 
 // Array of addresses
@@ -22,13 +23,12 @@ void setup()
 
 void loop()
 {
+  // Serial.print("samples(ADDR/RAW/TMP/EC): ");
   for (int i = 0; i < addrs_len; i++) {
     char * samples = get_measurement(addrs[i]);
     Serial.print(samples);
   }
 
-  // Serial.print("samples(ADDR/RAW/TMP/EC): ");
-  // sdi_serial_connection.sdi_cmd("0A1!");// change address from 0 to 1
   delay(10000);
 }
 
