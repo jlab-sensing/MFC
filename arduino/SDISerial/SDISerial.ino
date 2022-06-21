@@ -9,8 +9,6 @@
 const char addrs[] = {'0', '1'};
 const unsigned int addrs_len = 2;
 
-char *samples;
-
 SDISerial sdi_serial_connection(DATA_PIN);
 
 void setup()
@@ -25,7 +23,7 @@ void setup()
 void loop()
 {
   for (int i = 0; i < addrs_len; i++) {
-    samples = get_measurement(addrs[i]);
+    char * samples = get_measurement(addrs[i]);
     Serial.println(samples);
   }
 
