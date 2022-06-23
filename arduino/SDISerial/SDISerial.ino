@@ -3,6 +3,9 @@
 // Max Delay between the measure and data collection
 #define SENSOR_DELAY 1000
 
+/** Period between measurements in ms */
+#define MEAS_INT 10000
+
 // Pin for signal line (must be interrupt pin)
 #define DATA_PIN 13
 
@@ -29,7 +32,7 @@ void loop()
     Serial.print(samples);
   }
 
-  delay(10000);
+  delay(MEAS_INT);
 }
 
 /**
