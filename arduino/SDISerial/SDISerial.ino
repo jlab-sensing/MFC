@@ -17,17 +17,18 @@
 
 #include "SDISerial.h"
 
-// Max Delay between the measure and data collection
+/** Max Delay between the measure and data commands */
 #define SENSOR_DELAY 1000
 
 /** Period between measurements in ms */
 #define MEAS_INT 10000
 
-// Pin for signal line (must be interrupt pin)
+/** Pin used for line. Must be interrupt pin. */
 #define DATA_PIN 13
 
-// Array of addresses
+/** Array of address characters */
 const char addrs[] = {'0', '1'};
+/** Length of @p addrs */
 const unsigned int addrs_len = 2;
 
 SDISerial sdi_serial_connection(DATA_PIN);
