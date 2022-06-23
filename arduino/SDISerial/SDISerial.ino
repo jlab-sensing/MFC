@@ -11,6 +11,10 @@
  * and outputs it over serial. Sensor addresses are configured with @p addrs.
  * The logging interval can be changed with the define @p MEAS_INT.
  * 
+ * There is no checking done if the connected sensors do not match what is
+ * currently connected. If a address is defined but not connected no data will
+ * be output.
+ * 
  * If the data appears weird, then there is most likely bus contention between two
  * sensors. Every sensor connected must have a different address.
  */
