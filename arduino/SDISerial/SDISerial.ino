@@ -40,7 +40,9 @@ SDISerial sdi_serial_connection(DATA_PIN);
 void setup()
 {
   Serial.begin(1200);
-  Serial.println("SDISerial, compiled on " __DATE__ " " __TIME__);
+
+  // Debug string to break up the data stream when testing
+  //Serial.println("SDISerial, compiled on " __DATE__ " " __TIME__);
 
   sdi_serial_connection.begin();
   delay(3000);
