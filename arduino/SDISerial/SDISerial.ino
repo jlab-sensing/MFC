@@ -5,8 +5,6 @@
  * @version 0.1
  * @date 2022-06-23
  * 
- * @copyright Copyright (c) 2022
- * 
  * The firmware reads data using SDI from any number of TEROS-12 soil moisture sensors
  * and outputs it over serial. Sensor addresses are configured with @p addrs.
  * The logging interval can be changed with the define @p MEAS_INT.
