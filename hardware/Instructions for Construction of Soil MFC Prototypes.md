@@ -14,17 +14,20 @@ This document is an instruction manual on how to re-create the soil microbial fu
 ### 1.
 Sift the soil chosen for construction of the MFC. Sift debree from the soil such as large rocks or plant material, for construction of a single unit there should be approximatlye 9.5-11 litres of sifted soil. Add water and stir the soil till the soil reaches the consistency of mud.
 
-![IMG_20220623_121743](https://user-images.githubusercontent.com/66144060/175663092-a8f446ce-bf56-44af-9b82-7db259d6c06f.jpg | width=100)
-<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/66144060/175663092-a8f446ce-bf56-44af-9b82-7db259d6c06f.jpg)" width="500" height="500">
+<img src="https://user-images.githubusercontent.com/66144060/175663092-a8f446ce-bf56-44af-9b82-7db259d6c06f.jpg" width=50% height=50%>
 
+*Figure 1: Soil Slurry*
 
 ### 2.
-*Picture of plastic bin here*
+<img src="https://user-images.githubusercontent.com/66144060/175664796-5409e6bc-bf0c-4a6e-9b81-c59564d2a3ce.jpg" width=50% height=50%>
+
+*Figure 2: Plastic Bin*
 
 Insert the burlap into the plastic bin. The burlap should reach the bottem of the bin and all corners. Clip the burlap to the edges of the plastic bin. See figure 3 for an example.
 
-*Picture of burlap in plastic here*
+<img src="https://user-images.githubusercontent.com/66144060/175664950-819b132c-3286-40d7-af8e-5054f5524b2d.jpg" width =50% height=50%>
 
+*Figure 3: Burlap Clipped into the Plastic Bin*
 ### 3.
 Cut out four 12.5cm diameter carbon felt circles. 
 
