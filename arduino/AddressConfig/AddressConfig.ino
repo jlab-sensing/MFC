@@ -1,3 +1,23 @@
+/**
+ * @file AddressConfig.ino
+ * @author John Madden (jtmadden@ucsc.edu)
+ * @brief Utility to configure the address of TEROS-12 sensors.
+ * @version 0.1
+ * @date 2022-06-24
+ * 
+ * Allows the addresses on TEROS-12 sensors to be configured. Used when setting
+ * up multiple sensors connected to a single arduino that use the same data
+ * line. The address of each sensor needs to be unique or else there is bus
+ * contention.
+ * 
+ * To use this utility
+ * 1. Connect a SINGLE sensor to the arduino
+ * 2. Configure @p DATA_PIN and @p new_addr
+ * 3. Flash firmware
+ * 4. Check serial output. If the current address shows unexpected characters
+ * there is bus contention. Double check that a single sensor is connected.
+ */
+
 #include "SDISerial.h"
 
 /** Max Delay between the measure and data commands */
