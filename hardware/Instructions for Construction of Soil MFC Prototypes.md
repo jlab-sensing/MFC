@@ -14,7 +14,9 @@ This document is an instruction manual on how to re-create the soil microbial fu
 ### 1.
 Sift the soil chosen for construction of the MFC. Sift debree from the soil such as large rocks or plant material, for construction of a single unit there should be approximatlye 9.5-11 litres of sifted soil. Add water and stir the soil till the soil reaches the consistency of mud.
 
-*bucket of mud picture here*
+![IMG_20220623_121743](https://user-images.githubusercontent.com/66144060/175663092-a8f446ce-bf56-44af-9b82-7db259d6c06f.jpg | width=100)
+<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/66144060/175663092-a8f446ce-bf56-44af-9b82-7db259d6c06f.jpg)" width="500" height="500">
+
 
 ### 2.
 *Picture of plastic bin here*
