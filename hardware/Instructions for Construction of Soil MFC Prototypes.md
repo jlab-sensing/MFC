@@ -10,6 +10,7 @@ This document is an instruction manual on how to re-create the soil microbial fu
 - Carbon Felt
 - Wire
 - Clips
+- TEROS 12 Soil Moisture Sensor
 
 ### 1.
 Sift the soil chosen for construction of the MFC. Sift debree from the soil such as large rocks or plant material, for construction of a single unit there should be approximatlye 9.5-11 litres of sifted soil. Add water and stir the soil till the soil reaches the consistency of mud.
@@ -31,28 +32,53 @@ Insert the burlap into the plastic bin. The burlap should reach the bottem of th
 ### 3.
 Cut out four 12.5cm diameter carbon felt circles. 
 
-*Picture of carbon felt circle here*
+<img src="https://user-images.githubusercontent.com/66144060/175681895-cfeecf75-c2da-44fd-ade7-17c6c59ecb7f.jpg" width =50% height=50%>
+
+*Figure 4: Carbon Felt Circle*
 
 ### 4.
 Cut an appropiatly long piece of wireing to insert into a carbon felt circle. The exact length can vary, but the wireing should be at least 30cm to ensure that the wire can exit the soi. Strip 12.5cm inches of wireing bare, and insert the wire parallel to the large flat faces of the carbon felt circle. It is acceptable if some of the wire sticks out of the carbon felt, but enough should be in contact with the felt to ensure strong conductivity.
 
-*Picture of wire in the carbon felt here*
+<img src="https://user-images.githubusercontent.com/66144060/175686392-40c3696f-d726-46a0-b9fe-33b1ba4f8713.jpg" width = 50% height =50%>
+
+*Figure 5: Wire Inserted into Carbon Felt Circle, Right View*
+
+<img src="https://user-images.githubusercontent.com/66144060/175693783-6615dcee-1ce5-4e1e-a373-a12b50c41ad3.jpg" width = 50% height = 50%>
+
+*Figure 6: Wire Inserted into Carbon Felt Circle, Top View*
 
 Repeat this process for all four carbon felt circles.
 
 ### 5.
 Pour approxiamtly 2cm of mud into the burlap. Make sure the mud is distrubeted evenly, and that there are no air bubbles. Lay two of the carbon felt circles flat on the mud at oppisate ends of the bin. Each carbon felt circle will serve as an anode of one microbial fuel cell.
 
-*picture of carbon felt on soil here*
+<img src="https://user-images.githubusercontent.com/66144060/175695520-a97be077-8451-4236-9b6d-ea71bd1e8dfb.jpg" width = 50% height =50%>
+
+*Figure 7: Anodes on top of soil slurry*
 
 ### 6.
-Pour a 5cm layer of mud on top of the carbon felt layer. Once again make sure the mud pours flat and that there are no air bubbles. Lay the second set of carbon felt circles directly over top where the cathode carbon felt circles are 5cm below. This second set of carbon felt circles serve as the cathodes, and if the cathodes are too far offset from the anodes the MFC will not produce any voltage.
+Insert the TEROS 12 Soil Moisture Sensor with the three points down inbetween the two cathodes. The three points reaching the bottom of the plastic.
+
+<img src="https://user-images.githubusercontent.com/66144060/175696767-433931ad-77b8-4736-b153-d56bcaf1b33c.jpg" width = 50% height =50%>
+
+*Figure 8: Soil Moisture Sensor Insertion*
 
 ### 7.
+Pour a 5cm layer of mud on top of the carbon felt layer. Once again make sure the mud pours flat and that there are no air bubbles. Lay the second set of carbon felt circles directly over top where the cathode carbon felt circles are 5cm below. This second set of carbon felt circles serve as the cathodes, and if the cathodes are too far offset from the anodes the MFC will not produce any voltage.
+
+<img src="https://user-images.githubusercontent.com/66144060/175695699-24998a1c-f94d-4c43-8ab6-4a2f043bea2f.jpg" width = 50% height =50%>
+
+*Figure 9: Cathodes on top of sol slurry*
+
+### 8.
 Pour an additional 2cm of mud overtop the cathode layer.
 
-### 8. 
+<img src="https://user-images.githubusercontent.com/66144060/175696912-073d36b4-efdb-4f87-95e9-373b1725dd20.jpg" width = 50% height =50%>
+
+*Figure 10: Top Layer of Soil*
+### 9. 
 Moniter and maintain desired soil mositure over time. 
+
 
 
 
