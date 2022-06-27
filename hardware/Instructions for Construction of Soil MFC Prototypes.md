@@ -50,14 +50,14 @@ Cut an appropiatly long piece of wireing to insert into a carbon felt circle. Th
 Repeat this process for all four carbon felt circles.
 
 ### 5.
-Pour approxiamtly 2cm of mud into the burlap. Make sure the mud is distrubeted evenly, and that there are no air bubbles. Lay two of the carbon felt circles flat on the mud at oppisate ends of the bin. Each carbon felt circle will serve as an anode of one microbial fuel cell.
+Pour approxiamtly 2cm of mud into the burlap. Make sure the mud is distrubeted evenly, and that there are no air bubbles. Lay two of the carbon felt circles flat on the mud at opposite ends of the bin. Each carbon felt circle will serve as an anode of one microbial fuel cell.
 
 <img src="https://user-images.githubusercontent.com/66144060/175695520-a97be077-8451-4236-9b6d-ea71bd1e8dfb.jpg" width = 50% height =50%>
 
 *Figure 7: Anodes on top of soil slurry*
 
 ### 6.
-Insert the TEROS 12 Soil Moisture Sensor with the three points down inbetween the two cathodes. The three points reaching the bottom of the plastic.
+Insert the TEROS 12 Soil Moisture Sensor with the three points down inbetween the two cathodes. The tips of the three points of the sensor should reach the burlap and plastic at the bottom of the bin.
 
 <img src="https://user-images.githubusercontent.com/66144060/175696767-433931ad-77b8-4736-b153-d56bcaf1b33c.jpg" width = 50% height =50%>
 
