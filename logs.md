@@ -70,3 +70,9 @@ Teros: 2
 
 # Stanford
 
+# UCSC
+
+## 2022-06-27
+
+- Rebuilt cells 1,3 to proper specifications. The dirt was fresh from the farm
+and rehydrated. A mix of felts from the same cells and newly cut were used.
