@@ -70,13 +70,7 @@ Pour a 5cm layer of mud on top of the carbon felt layer. Once again make sure th
 
 *Figure 9: Cathodes on top of sol slurry*
 
-### 8.
-Pour an additional 2cm of mud overtop the cathode layer.
-
-<img src="https://user-images.githubusercontent.com/66144060/175696912-073d36b4-efdb-4f87-95e9-373b1725dd20.jpg" width = 50% height =50%>
-
-*Figure 10: Top Layer of Soil*
-### 9. 
+### 8. 
 Moniter and maintain desired soil mositure over time. 
 
 
