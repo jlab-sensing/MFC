@@ -72,6 +72,13 @@ Teros: 2
 
 # UCSC
 
+## Network Info
+
+| Device  | MAC               | Hostname              |
+|---------|-------------------|-----------------------|
+| rocket1 | 40:bd:32:e9:18:c6 | rocket1-jlab.ucsc.edu |
+| rocket3 | b0:d5:cc:fb:39:78 | rocket3-jlab.ucsc.edu |
+
 ## 2022-06-27
 
 - Rebuilt cells 1,3 to proper specifications. The dirt was fresh from the farm
