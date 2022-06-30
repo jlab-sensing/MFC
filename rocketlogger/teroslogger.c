@@ -55,7 +55,8 @@ int main(int argc, char** argv){
     }
 
     if (help) {
-        printf("Usage: %s [-h] [-o file]\n", argv[0]);
+        printf("Usage: %s [-h] [-o file] [tty]\n\n", argv[0]);
+        printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file");
         printf("Options:\n");
         printf("  -o <file>\tpath to output log file\n");
         return 0;
@@ -64,6 +65,22 @@ int main(int argc, char** argv){
     if (output_file) {
         printf("Output file: %s\n", output_file);
     }
+    
+    // Remaining options
+    int optsrem = argc - optind;
+    if (optsrem > 1) {
+        printf("Too many arguments!\n");
+        return 1;
+    }
+    else if (optsrem < 1) {
+        printf("Too few arguments!\n");
+        return 1;
+    }
+    else {
+        tty_path = argv[optind];
+    }
+
+    printf("TTY: %s\n", tty_path);
 
     return 0;
 
