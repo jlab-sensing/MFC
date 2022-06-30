@@ -33,8 +33,11 @@ int main(int argc, char** argv){
 
     opterr = 0;
 
-    while ((c = getopt (argc, argv, "o:")) != -1) {
+    while ((c = getopt (argc, argv, "ho:")) != -1) {
         switch (c) {
+            case 'h':
+                help = 1;
+                break;
             case 'o':
                 output_file = optarg;
                 break;
@@ -52,9 +55,10 @@ int main(int argc, char** argv){
     }
 
     if (help) {
-        printf("usage: %s [-lh] [-t tty]\n", argv[0]);
-        printf("-t tty\t: set path to tty device file\n");
-        exit(0);
+        printf("Usage: %s [-h] [-o file]\n", argv[0]);
+        printf("Options:\n");
+        printf("  -o <file>\tpath to output log file\n");
+        return 0;
     }
 
     if (output_file) {
