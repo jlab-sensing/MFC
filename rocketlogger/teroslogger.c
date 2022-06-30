@@ -128,7 +128,7 @@ int main(int argc, char** argv){
     tty.c_cflag &= ~CSTOPB;
 
     // No flow control
-    tty.c_cflag &= CRTSCTS;
+    tty.c_cflag &= ~CRTSCTS;
    
     // Turn on READ and ignore ctrl lines
     tty.c_cflag |= CREAD | CLOCAL;
@@ -148,10 +148,6 @@ int main(int argc, char** argv){
     tty.c_iflag &= ~(IXON | IXOFF | IXANY);
     // Disable special handling of bytes (allows only raw data)
     tty.c_iflag &= ~(IGNBRK | BRKINT |PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
-
-    // Disabled output processing
-    tty.c_oflag &= ~OPOST;
-    tty.c_oflag &= ~ONLCR;
 
     // TODO: Allow infinite wait time for character to account for any amount
     // of delays in reading from the serial port
@@ -185,7 +181,22 @@ int main(int argc, char** argv){
     // Apply settings
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("%s\n", strerror(errno));
+        return 1;
     }
+    
+    while (1) {
+        char read_buf[256];
+        memset(read_buf, '\0', sizeof(read_buf));
+        
+        int num_bytes = read(serial_port, read_buf, sizeof(read_buf));
+
+        if (num_bytes < 0) {
+            printf("%s\n", strerror(errno));
+        }
+
+        printf("Read %i bytes. Recv: %s\n", num_bytes, read_buf);
+    }
+
 
     FILE* outfile;
     FILE* pidfile;
