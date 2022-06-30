@@ -11,6 +11,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+/** Baud rate of serial port */
+#define BAUD_RATE B1200
+
 uint8_t inbuf[1];
 uint8_t outbuf[50];
 char *logpath = "/home/rocketlogger/soil_battery";
@@ -104,20 +107,64 @@ int main(int argc, char** argv){
         printf("%s\n", strerror(errno));
         return 1;
     }
-    
-    return 0;
+  
+    /* --------------------- */
+    /* Configure serial port */
+    /* --------------------- */
 
     struct termios tty;
-    memset (&tty, 0, sizeof tty);
 
+    // Read existing settings
     if (tcgetattr(serial_port, &tty) != 0) {
-        printf("Error fetching tty config, %i\n",errno);
+        printf("%s\n", strerror(errno));
+        return 1;
     }
-    /* Set Baud Rate */
-    cfsetospeed (&tty, (speed_t)B1200);
-    cfsetispeed (&tty, (speed_t)B1200);
 
-    tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;     // 8-bit chars
+
+    // 8-N-1
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+
+    // No flow control
+    tty.c_cflag &= CRTSCTS;
+   
+    // Turn on READ and ignore ctrl lines
+    tty.c_cflag |= CREAD | CLOCAL;
+
+    // Non-canonical mode (process as characters come in)
+    tty.c_lflag &= ~ICANON;
+
+    // Disable eching
+    tty.c_lflag &= ~ECHO;
+    tty.c_lflag &= ~ECHOE;
+    tty.c_lflag &= ~ECHONL;
+
+    // Disable signal characters
+    tty.c_lflag &= ~ISIG;
+
+    // Disable software flow control
+    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
+    // Disable special handling of bytes (allows only raw data)
+    tty.c_iflag &= ~(IGNBRK | BRKINT |PARMRK | ISTRIP | INLCR | IGNCR | ICRNL);
+
+    // Disabled output processing
+    tty.c_oflag &= ~OPOST;
+    tty.c_oflag &= ~ONLCR;
+
+    // TODO: Allow infinite wait time for character to account for any amount
+    // of delays in reading from the serial port
+    // 10 sec read timeout
+    tty.c_cc[VTIME] = 100;
+    tty.c_cc[VMIN] = 0;
+    
+    /* Set Baud Rate */
+    cfsetospeed (&tty, BAUD_RATE);
+    cfsetispeed (&tty, BAUD_RATE);
+
+    /*
+    tty.c_cflag = CS8;     // 8-bit chars
     tty.c_iflag &= ~IGNBRK;         // disable break processing
     tty.c_lflag = 0;                // no signaling chars, no echo,
                                     // no canonical processing
@@ -133,12 +180,11 @@ int main(int argc, char** argv){
     tty.c_cflag |= 0;						// ?? does this actually do anything?
     tty.c_cflag &= ~CSTOPB;					// use only one stop bit
     tty.c_cflag &= ~CRTSCTS;				// ?? not in POSIX... is this necessary?
+    */
 
-
-    /* Flush Port, then applies attributes */
-    tcflush( serial_port, TCIFLUSH );
+    // Apply settings
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
-        printf("Error configuring tty, %i\n", errno);
+        printf("%s\n", strerror(errno));
     }
 
     FILE* outfile;
