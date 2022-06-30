@@ -21,7 +21,9 @@ char *pidpath = "/run/teroslogger.pid";
 // PS: I have no idea what I'm doing!
 
 int main(int argc, char** argv){
-    /* cli args parse */
+    /* -------------- */
+    /* Parse CLI args */
+    /* -------------- */
 
     /* Display help prompt */
     int help = 0;
@@ -91,35 +93,24 @@ int main(int argc, char** argv){
         }
     }
 
+    /* ---------------- */
+    /* Open serial port */
+    /* ---------------- */
+
+    // Open USB Port in readonly
+    int serial_port = open(tty_path, O_RDONLY);
+    // Check for errors
+    if (serial_port < 0) {
+        printf("%s\n", strerror(errno));
+        return 1;
+    }
+    
     return 0;
-
-    int USB;
-    if (tty_path) {
-        USB = open( tty_path, O_RDWR|O_NOCTTY|O_NONBLOCK ); // ?? maybe O_RDONLY would be better here
-    }
-    else {
-        USB = open( "/dev/ttyACM0", O_RDWR|O_NOCTTY|O_NONBLOCK ); // ?? same as above
-    }
-    printf("USB = %d\n", USB);
-
-    if (USB == -1) {
-        printf("serial port open bad :( \n");
-        exit(1);
-    }
-    else{
-        printf("serial port open good\n");
-    }
-
-    if (fcntl(USB, F_SETFL, 0) == -1) // is this line necessary? didn't you already open USB as nonblocking?
-    {
-        printf("can't set tty device non-blocking\n");
-        exit(1);
-    }
 
     struct termios tty;
     memset (&tty, 0, sizeof tty);
 
-    if (tcgetattr(USB, &tty) != 0) {
+    if (tcgetattr(serial_port, &tty) != 0) {
         printf("Error fetching tty config, %i\n",errno);
     }
     /* Set Baud Rate */
@@ -145,8 +136,8 @@ int main(int argc, char** argv){
 
 
     /* Flush Port, then applies attributes */
-    tcflush( USB, TCIFLUSH );
-    if (tcsetattr(USB, TCSANOW, &tty) != 0) {
+    tcflush( serial_port, TCIFLUSH );
+    if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("Error configuring tty, %i\n", errno);
     }
 
@@ -158,7 +149,7 @@ int main(int argc, char** argv){
 
     /* keep reading until start of line */
     do {
-        read(USB, inbuf, sizeof inbuf);
+        read(serial_port, inbuf, sizeof inbuf);
     } while (inbuf[0] != '\n');
 
     printf("Synced\n");
@@ -185,7 +176,7 @@ int main(int argc, char** argv){
         exit(0);
     }
 
-    //unmask the file mode ?? why don't we do this earlier (e.g. line 53 before opening USB)?
+    //unmask the file mode ?? why don't we do this earlier (e.g. line 53 before opening serial_port)?
     umask(0);
     //set new session. this makes the child independent from the controlling terminal
     sid = setsid();
@@ -210,7 +201,7 @@ int main(int argc, char** argv){
     //memset(logstr, 0, sizeof(logstr));
     // do this forever??
     while (1) {
-        read(USB, inbuf, sizeof inbuf); // read in a byte
+        read(serial_port, inbuf, sizeof inbuf); // read in a byte
         if (inbuf[0] == '\n') { // if we reached the end of a measurement
             if (marker_state > 0) {
                 // if this wasn't an empty line, toss a null terminator to the output string,
