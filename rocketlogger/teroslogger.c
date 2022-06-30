@@ -22,7 +22,12 @@ char *pidpath = "/run/teroslogger.pid";
 
 int main(int argc, char** argv){
     /* cli args parse */
+
+    /* Display help prompt */
     int help = 0;
+    /* Verbose logging */
+    int verbose = 0;
+
     char *tty_path = NULL;
     int index;
     int c;
@@ -33,10 +38,13 @@ int main(int argc, char** argv){
 
     opterr = 0;
 
-    while ((c = getopt (argc, argv, "ho:")) != -1) {
+    while ((c = getopt (argc, argv, "hvo:")) != -1) {
         switch (c) {
             case 'h':
                 help = 1;
+                break;
+            case 'v':
+                verbose = 1;
                 break;
             case 'o':
                 output_file = optarg;
@@ -62,10 +70,6 @@ int main(int argc, char** argv){
         return 0;
     }
 
-    if (output_file) {
-        printf("Output file: %s\n", output_file);
-    }
-    
     // Remaining options
     int optsrem = argc - optind;
     if (optsrem > 1) {
@@ -80,7 +84,12 @@ int main(int argc, char** argv){
         tty_path = argv[optind];
     }
 
-    printf("TTY: %s\n", tty_path);
+    if (verbose) {
+        printf("Reading from %s\n", tty_path);
+        if (output_file) {
+            printf("Logging output to %s\n", output_file);
+        }
+    }
 
     return 0;
 
