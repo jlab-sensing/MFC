@@ -209,48 +209,6 @@ int main(int argc, char** argv){
         read(serial_port, inbuf, sizeof inbuf);
     } while (inbuf[0] != '\n');
 
-    printf("Synced\n");
-    sprintf(filename, "%s/TEROSoutput-%lu-f%i.csv", logpath, (unsigned long) time(NULL), num);
-    // Create child process so we can kill the parent and do setsid() on the child
-    // in order to free the controlling terminal
-    process_id = fork();
-    // Indication of fork() failure
-    if (process_id < 0) {
-        printf("fork failed!\n");
-        // Return failure in exit status
-        exit(1);
-    }
-
-    // PARENT PROCESS. Need to kill it. 
-    if (process_id > 0) {
-        // write PID to pid file so we can kill logging later
-        pidfile = fopen(pidpath, "wb"); // ?? is there only one logging process per device?
-        printf("process_id of child process %d\n", process_id);
-        fprintf(pidfile, "%d", process_id);
-        fflush(pidfile);
-        fclose(pidfile);
-        // return success in exit status
-        exit(0);
-    }
-
-    //unmask the file mode ?? why don't we do this earlier (e.g. line 53 before opening serial_port)?
-    umask(0);
-    //set new session. this makes the child independent from the controlling terminal
-    sid = setsid();
-    if (sid < 0) {
-        // Return failure
-        exit(1);
-    }
-
-    close(STDIN_FILENO);  // ?? why do we do this? does it improve performance? 
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-
-    outfile = fopen(filename, "wb");
-    //TEROS-12 OUTPUT FORMAT: samples(ADDR/RAW/TMP/EC): 0+1870.34+21.1+0
-    char header[] = "timestamp,sensorID,raw_VWC,temp,EC\n";
-    fwrite(header, sizeof(char), strlen(header), outfile); // write CSV header
-
     // finally start reading and logging measurements
     int marker_state = 0;
     char logstr[80];
