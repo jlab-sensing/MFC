@@ -27,29 +27,25 @@ int main(int argc, char** argv){
     int index;
     int c;
     int num = 0;
+
+    /* Output file name */
+    char * output_file = NULL;
+
     opterr = 0;
-    while ((c = getopt (argc, argv, "n:t:")) != -1) {
+
+    while ((c = getopt (argc, argv, "o:")) != -1) {
         switch (c) {
-            case 't':
-                tty_path = optarg;
-                break;
-            case 'n':
-                if (sscanf (optarg, "%i", &num) != 1) {
-                    fprintf(stderr, "error - not an integer");
-                    exit(1);
-                }
-                fprintf(stderr, "num=%i\n",num);
+            case 'o':
+                output_file = optarg;
                 break;
             case '?':
-                if (optopt == 't')
-                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                else if (optopt == 'n')
+                if (optopt == 'o')
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
                 else if (isprint(optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
                 else
                     fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-                exit(1);
+                return 1;
             default:
                 abort();
         }
@@ -60,6 +56,12 @@ int main(int argc, char** argv){
         printf("-t tty\t: set path to tty device file\n");
         exit(0);
     }
+
+    if (output_file) {
+        printf("Output file: %s\n", output_file);
+    }
+
+    return 0;
 
     int USB;
     if (tty_path) {
