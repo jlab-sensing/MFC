@@ -1,3 +1,11 @@
+/**
+ * @file SampleData.ino
+ * @author John Madden (jtmadden@ucsc.edu)
+ * @brief Prints randomly generated sample data over serial
+ * @version 0.1
+ * @date 2022-06-30
+ */
+
 void setup() {
 	Serial.begin(1200);
 	Serial.println("SampleData, compiled on " __DATE__ " " __TIME__);
