@@ -33,19 +33,19 @@ int main(int argc, char** argv){
             case 't':
                 tty_path = optarg;
                 break;
-	    case 'n':
-		if (sscanf (optarg, "%i", &num) != 1) {
-    			fprintf(stderr, "error - not an integer");
-			exit(1);
-		}
-		fprintf(stderr, "num=%i\n",num);
-		break;
+            case 'n':
+                if (sscanf (optarg, "%i", &num) != 1) {
+                    fprintf(stderr, "error - not an integer");
+                    exit(1);
+                }
+                fprintf(stderr, "num=%i\n",num);
+                break;
             case '?':
                 if (optopt == 't')
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
                 else if (optopt == 'n')
-		    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-		else if (isprint(optopt))
+                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                else if (isprint(optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
                 else
                     fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
@@ -97,7 +97,7 @@ int main(int argc, char** argv){
     tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;     // 8-bit chars
     tty.c_iflag &= ~IGNBRK;         // disable break processing
     tty.c_lflag = 0;                // no signaling chars, no echo,
-    // no canonical processing
+                                    // no canonical processing
     tty.c_oflag = 0;                // no remapping, no delays
     tty.c_cc[VMIN]  = 0;            // read doesn't block
     tty.c_cc[VTIME] = 100;            // 10 seconds read timeout
@@ -105,7 +105,7 @@ int main(int argc, char** argv){
     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
 
     tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
-    // enable reading
+                                    // enable reading
     tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
     tty.c_cflag |= 0;						// ?? does this actually do anything?
     tty.c_cflag &= ~CSTOPB;					// use only one stop bit
@@ -128,7 +128,7 @@ int main(int argc, char** argv){
     do {
         read(USB, inbuf, sizeof inbuf);
     } while (inbuf[0] != '\n');
-    
+
     printf("Synced\n");
     sprintf(filename, "%s/TEROSoutput-%lu-f%i.csv", logpath, (unsigned long) time(NULL), num);
     // Create child process so we can kill the parent and do setsid() on the child
@@ -187,7 +187,7 @@ int main(int argc, char** argv){
                 sprintf(logstr, "%lu,%s\n", (unsigned long) time(NULL), outbuf);
                 fwrite(logstr, sizeof(char), strlen(logstr), outfile); 
                 fflush(outfile);
-                
+
                 // then clear our buffers, reset our writing index, and wait a sec before reading again
                 //memset(outbuf, 0, sizeof(outbuf));
                 //memset(logstr, 0, sizeof(logstr));
@@ -195,9 +195,9 @@ int main(int argc, char** argv){
                 sleep(1);
             }
         } else if (marker_state > sizeof(outbuf)){ //oops, overflow
-            //printf("marker state %i\n", marker_state);
-            // ?? should we reject the entire measurement and jump to the next newline? right now this just
-            // ?? truncates the measurement and returns the latter piece, which may be junk?
+                                                   //printf("marker state %i\n", marker_state);
+                                                   // ?? should we reject the entire measurement and jump to the next newline? right now this just
+                                                   // ?? truncates the measurement and returns the latter piece, which may be junk?
             marker_state = 0;
             //memset(outbuf, 0, sizeof(outbuf)); // this is unnecessary now that we are null terminating outbuf
         } else {
@@ -211,7 +211,7 @@ int main(int argc, char** argv){
             marker_state += 1;
         }
     }
-    
+
     fclose(outfile); // ?? is this ever run?
     return 0;
 }
