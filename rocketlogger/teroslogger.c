@@ -31,17 +31,14 @@ int main(int argc, char** argv){
     int help = 0;
     /* Verbose logging */
     int verbose = 0;
-
+    /* Path to tty */
     char *tty_path = NULL;
-    int index;
-    int c;
-    int num = 0;
-
     /* Output file name */
     char * output_file = NULL;
 
     opterr = 0;
 
+    int c;
     while ((c = getopt (argc, argv, "hvo:")) != -1) {
         switch (c) {
             case 'h':
