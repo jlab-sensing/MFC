@@ -1,4 +1,5 @@
 CC = gcc
+CFLAGS = -g
 
 teroslogger: teroslogger.c
 

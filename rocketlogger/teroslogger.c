@@ -14,7 +14,6 @@
 /** Baud rate of serial port */
 #define BAUD_RATE B1200
 
-uint8_t inbuf[1];
 uint8_t outbuf[50];
 char *logpath = "/home/rocketlogger/soil_battery";
 char *pidpath = "/run/teroslogger.pid";
@@ -107,7 +106,7 @@ int main(int argc, char** argv){
         printf("%s\n", strerror(errno));
         return 1;
     }
-  
+
     /* --------------------- */
     /* Configure serial port */
     /* --------------------- */
@@ -129,7 +128,7 @@ int main(int argc, char** argv){
 
     // No flow control
     tty.c_cflag &= ~CRTSCTS;
-   
+
     // Turn on READ and ignore ctrl lines
     tty.c_cflag |= CREAD | CLOCAL;
 
@@ -154,102 +153,90 @@ int main(int argc, char** argv){
     // 10 sec read timeout
     tty.c_cc[VTIME] = 100;
     tty.c_cc[VMIN] = 0;
-    
+
     /* Set Baud Rate */
     cfsetospeed (&tty, BAUD_RATE);
     cfsetispeed (&tty, BAUD_RATE);
 
     /*
-    tty.c_cflag = CS8;     // 8-bit chars
-    tty.c_iflag &= ~IGNBRK;         // disable break processing
-    tty.c_lflag = 0;                // no signaling chars, no echo,
-                                    // no canonical processing
-    tty.c_oflag = 0;                // no remapping, no delays
-    tty.c_cc[VMIN]  = 0;            // read doesn't block
-    tty.c_cc[VTIME] = 100;            // 10 seconds read timeout
+       tty.c_cflag = CS8;     // 8-bit chars
+       tty.c_iflag &= ~IGNBRK;         // disable break processing
+       tty.c_lflag = 0;                // no signaling chars, no echo,
+                                       // no canonical processing
+                                       tty.c_oflag = 0;                // no remapping, no delays
+                                       tty.c_cc[VMIN]  = 0;            // read doesn't block
+                                       tty.c_cc[VTIME] = 100;            // 10 seconds read timeout
 
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
+                                       tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
 
-    tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
-                                    // enable reading
-    tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
-    tty.c_cflag |= 0;						// ?? does this actually do anything?
-    tty.c_cflag &= ~CSTOPB;					// use only one stop bit
-    tty.c_cflag &= ~CRTSCTS;				// ?? not in POSIX... is this necessary?
-    */
+                                       tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
+                                                                       // enable reading
+                                                                       tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
+                                                                       tty.c_cflag |= 0;						// ?? does this actually do anything?
+                                                                       tty.c_cflag &= ~CSTOPB;					// use only one stop bit
+                                                                       tty.c_cflag &= ~CRTSCTS;				// ?? not in POSIX... is this necessary?
+                                                                       */
 
     // Apply settings
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("%s\n", strerror(errno));
         return 1;
     }
-    
-    while (1) {
-        char read_buf[256];
-        memset(read_buf, '\0', sizeof(read_buf));
-        
-        int num_bytes = read(serial_port, read_buf, sizeof(read_buf));
 
-        if (num_bytes < 0) {
-            printf("%s\n", strerror(errno));
-        }
+    /* ---------------- */
+    /* Log data to file */
+    /* ---------------- */
 
-        printf("Read %i bytes. Recv: %s\n", num_bytes, read_buf);
-    }
+    FILE * outfile = fopen(output_file, "w");
 
+    /* Output Buffer */
+    char outbuf[256];
 
-    FILE* outfile;
-    FILE* pidfile;
-    char filename[100];
-    pid_t process_id = 0;
-    pid_t sid = 0;
+    /* Input buffer */
+    char * inbuf = outbuf;
 
-    /* keep reading until start of line */
+    // Discard output until newline
     do {
-        read(serial_port, inbuf, sizeof inbuf);
-    } while (inbuf[0] != '\n');
+        read(serial_port, inbuf, 1);
+    }
+    while (*inbuf != '\n');
 
-    // finally start reading and logging measurements
-    int marker_state = 0;
-    char logstr[80];
-    //memset(outbuf, 0, sizeof(outbuf));
-    //memset(logstr, 0, sizeof(logstr));
-    // do this forever??
     while (1) {
-        read(serial_port, inbuf, sizeof inbuf); // read in a byte
-        if (inbuf[0] == '\n') { // if we reached the end of a measurement
-            if (marker_state > 0) {
-                // if this wasn't an empty line, toss a null terminator to the output string,
-                // slap a time stamp on our measurement, and write that bad boi to file
-                outbuf[marker_state] = 0; // this should let us avoid having to memset outbuf every time
-                sprintf(logstr, "%lu,%s\n", (unsigned long) time(NULL), outbuf);
-                fwrite(logstr, sizeof(char), strlen(logstr), outfile); 
-                fflush(outfile);
+        // Store time
+        int num_char = sprintf(inbuf, "%lu,", (unsigned long) time(NULL));
+        inbuf += num_char;
 
-                // then clear our buffers, reset our writing index, and wait a sec before reading again
-                //memset(outbuf, 0, sizeof(outbuf));
-                //memset(logstr, 0, sizeof(logstr));
-                marker_state = 0;
-                sleep(1);
+        while(1) {
+            // Read single byte of data
+            num_char = read(serial_port, inbuf, sizeof(char)); 
+
+            // Check for errors on read
+            if (num_char < 0) {
+                printf("%s\n", strerror(errno));
             }
-        } else if (marker_state > sizeof(outbuf)){ //oops, overflow
-                                                   //printf("marker state %i\n", marker_state);
-                                                   // ?? should we reject the entire measurement and jump to the next newline? right now this just
-                                                   // ?? truncates the measurement and returns the latter piece, which may be junk?
-            marker_state = 0;
-            //memset(outbuf, 0, sizeof(outbuf)); // this is unnecessary now that we are null terminating outbuf
-        } else {
-            // we just write the new byte into our outbuf, replacing '+' with ',' for csv, and increment 
-            // the writing index
-            if (inbuf[0] == '+') {
-                outbuf[marker_state] = ',';
-            } else {
-                outbuf[marker_state] = inbuf[0];
+
+            // Convert + to , for csv formatting
+            if (*inbuf == '+') {
+                *inbuf = ',';
             }
-            marker_state += 1;
+
+            // Stop reading on line ending
+            if (*inbuf == '\n') {
+                ++inbuf;
+                break;
+            }
+
+            ++inbuf;
         }
+
+        // Write to output buffer and flush
+        fwrite(outbuf, sizeof(char), inbuf - outbuf, outfile);
+        fflush(outfile);
+        // Reset pointer position 
+        inbuf = outbuf;
     }
 
-    fclose(outfile); // ?? is this ever run?
+    fclose(outfile);
+
     return 0;
 }
