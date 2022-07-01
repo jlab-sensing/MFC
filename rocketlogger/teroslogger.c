@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdint.h>
 #include <ctype.h>
 #include <stdio.h>   /* Standard input/output definitions */
 #include <string.h>  /* String function definitions */
@@ -8,19 +7,9 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 #include <time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 /** Baud rate of serial port */
 #define BAUD_RATE B1200
-
-uint8_t outbuf[50];
-char *logpath = "/home/rocketlogger/soil_battery";
-char *pidpath = "/run/teroslogger.pid";
-
-// TODOs:
-//  - better format checking before fwrite (some lines in logfile end up f'd up occasionally)
-// PS: I have no idea what I'm doing!
 
 int main(int argc, char** argv){
     /* -------------- */
