@@ -114,11 +114,8 @@ int main(int argc, char** argv){
         tty_path = argv[optind];
     }
 
-    if (verbose) {
-        printf("Reading from %s\n", tty_path);
-        if (output_file) {
-            printf("Logging output to %s\n", output_file);
-        }
+    if (verbose && output_file) {
+        printf("Logging output to %s\n", output_file);
     }
 
     /* ---------------- */
@@ -131,6 +128,10 @@ int main(int argc, char** argv){
     if (serial_port < 0) {
         printf("%s\n", strerror(errno));
         return 1;
+    }
+
+    if (verbose) {
+        printf("Opened %s\n", tty_path);
     }
 
     /* --------------------- */
@@ -190,9 +191,17 @@ int main(int argc, char** argv){
         return 1;
     }
 
+    if (verbose) {
+        printf("Applied settings to %s\n", tty_path);
+    }
+
     /* ---------------- */
     /* Log data to file */
     /* ---------------- */
+
+    if (verbose) {
+        printf("Logging to %s...\n", output_file);
+    }
 
     FILE * outfile = fopen(output_file, "w");
 
