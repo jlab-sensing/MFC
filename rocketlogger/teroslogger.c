@@ -32,6 +32,15 @@
 /** Baud rate of serial port */
 #define BAUD_RATE B1200
 
+/**
+ * Prints help prompt
+ *
+ * @param name Name of program
+ */
+void print_help(const char * name) {
+    printf("Run '%s -h' for usage.\n", name);
+}
+
 int main(int argc, char** argv){
     /* -------------- */
     /* Parse CLI args */
@@ -61,12 +70,18 @@ int main(int argc, char** argv){
                 output_file = optarg;
                 break;
             case '?':
-                if (optopt == 'o')
+                if (optopt == 'o') {
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-                else if (isprint(optopt))
+                    print_help(argv[0]);
+                }
+                else if (isprint(optopt)) {
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
+                    print_help(argv[0]);
+                }
+                else {
                     fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                    print_help(argv[0]);
+                }
                 return 1;
             default:
                 abort();
@@ -74,9 +89,11 @@ int main(int argc, char** argv){
     }
 
     if (help) {
-        printf("Usage: %s [-h] [-o file] [tty]\n\n", argv[0]);
-        printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file");
+        printf("Usage: %s [-hv] [-o file] [tty]\n", argv[0]);
+        printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file\n\n");
         printf("Options:\n");
+        printf("  -h\tPrints this message\n");
+        printf("  -v\tVerbose debug statements\n");
         printf("  -o <file>\tpath to output log file\n");
         return 0;
     }
@@ -85,10 +102,12 @@ int main(int argc, char** argv){
     int optsrem = argc - optind;
     if (optsrem > 1) {
         printf("Too many arguments!\n");
+        print_help(argv[0]);
         return 1;
     }
     else if (optsrem < 1) {
         printf("Too few arguments!\n");
+        print_help(argv[0]);
         return 1;
     }
     else {
