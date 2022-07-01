@@ -158,25 +158,6 @@ int main(int argc, char** argv){
     cfsetospeed (&tty, BAUD_RATE);
     cfsetispeed (&tty, BAUD_RATE);
 
-    /*
-       tty.c_cflag = CS8;     // 8-bit chars
-       tty.c_iflag &= ~IGNBRK;         // disable break processing
-       tty.c_lflag = 0;                // no signaling chars, no echo,
-                                       // no canonical processing
-                                       tty.c_oflag = 0;                // no remapping, no delays
-                                       tty.c_cc[VMIN]  = 0;            // read doesn't block
-                                       tty.c_cc[VTIME] = 100;            // 10 seconds read timeout
-
-                                       tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
-
-                                       tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
-                                                                       // enable reading
-                                                                       tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
-                                                                       tty.c_cflag |= 0;						// ?? does this actually do anything?
-                                                                       tty.c_cflag &= ~CSTOPB;					// use only one stop bit
-                                                                       tty.c_cflag &= ~CRTSCTS;				// ?? not in POSIX... is this necessary?
-                                                                       */
-
     // Apply settings
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("%s\n", strerror(errno));
