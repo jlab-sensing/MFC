@@ -96,9 +96,9 @@ int main(int argc, char** argv){
         printf("Usage: %s [-hv] [-o file] [tty]\n", argv[0]);
         printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file\n\n");
         printf("Options:\n");
-        printf("  -h\tPrints this message\n");
-        printf("  -v\tVerbose debug statements\n");
-        printf("  -q\tRun quietly (no stdout)\n");
+        printf("  -h\t\tPrints this message\n");
+        printf("  -v\t\tVerbose debug statements\n");
+        printf("  -q\t\tRun quietly (no stdout)\n");
         printf("  -o <file>\tpath to output log file\n");
         return 0;
     }
