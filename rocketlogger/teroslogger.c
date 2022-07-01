@@ -50,6 +50,8 @@ int main(int argc, char** argv){
     int help = 0;
     /* Verbose logging */
     int verbose = 0;
+    /* Do not print any output */
+    int quiet = 0;
     /* Path to tty */
     char *tty_path = NULL;
     /* Output file name */
@@ -58,7 +60,7 @@ int main(int argc, char** argv){
     opterr = 0;
 
     int c;
-    while ((c = getopt (argc, argv, "hvo:")) != -1) {
+    while ((c = getopt (argc, argv, "hvqo:")) != -1) {
         switch (c) {
             case 'h':
                 help = 1;
@@ -66,6 +68,8 @@ int main(int argc, char** argv){
             case 'v':
                 verbose = 1;
                 break;
+            case 'q':
+                quiet = 1;
             case 'o':
                 output_file = optarg;
                 break;
@@ -87,15 +91,22 @@ int main(int argc, char** argv){
                 abort();
         }
     }
-
+    
     if (help) {
         printf("Usage: %s [-hv] [-o file] [tty]\n", argv[0]);
         printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file\n\n");
         printf("Options:\n");
         printf("  -h\tPrints this message\n");
         printf("  -v\tVerbose debug statements\n");
+        printf("  -q\tRun quietly (no stdout)\n");
         printf("  -o <file>\tpath to output log file\n");
         return 0;
+    }
+    
+    if (verbose && quiet) {
+        printf("Cannot use -q and -v together!\n");
+        print_help(argv[0]);
+        return 1;
     }
 
     // Remaining options
@@ -260,8 +271,9 @@ int main(int argc, char** argv){
             fwrite(outbuf, sizeof(char), inbuf - outbuf, outfile);
             fflush(outfile);
         }
+
         // Print to terminal
-        else {
+        if (!quiet) {
             *inbuf = '\0';
             printf("%s", outbuf);
         }
