@@ -1,3 +1,24 @@
+/**
+ * @file teroslogger.c
+ * @author Alvin Tan
+ * @author John Madden (jtmadden@ucsc.edu)
+ * @brief Serial logger of TEROS-12 sensor to a .csv file
+ * @date 2022-06-30
+ *
+ * This program is intended to be used in conjunction with \p SerialLogger
+ * running on a Arduino connected to a serial port. Usage information can be
+ * found by running the program without any arguments.
+ *
+ * The output format of the csv file is as follows
+ * \verbatim
+ * timestamp,raw_soil_moisture,temp,electrical_conductivity
+ * \verbatim
+ *
+ * It is recommended to use the output parameter rather than redirecting the
+ * stream. The output is buffered until a full line is read resulting in fewer
+ * errors in the output file.
+ */
+
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdio.h>   /* Standard input/output definitions */
