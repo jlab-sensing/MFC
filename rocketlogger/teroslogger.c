@@ -199,11 +199,19 @@ int main(int argc, char** argv){
     /* Log data to file */
     /* ---------------- */
 
-    if (verbose) {
-        printf("Logging to %s...\n", output_file);
+    // Open output file
+    FILE * outfile;
+    if (output_file) {
+        outfile = fopen(output_file, "w");
     }
 
-    FILE * outfile = fopen(output_file, "w");
+    if (verbose && output_file) {
+        printf("Logging to %s\n", output_file);
+    }
+ 
+    if (verbose) {
+        printf("Reading serial...\n");
+    }
 
     /* Output Buffer */
     char outbuf[256];
@@ -245,14 +253,26 @@ int main(int argc, char** argv){
             ++inbuf;
         }
 
-        // Write to output buffer and flush
-        fwrite(outbuf, sizeof(char), inbuf - outbuf, outfile);
-        fflush(outfile);
+
+
+        // Write to output file
+        if (output_file) {
+            fwrite(outbuf, sizeof(char), inbuf - outbuf, outfile);
+            fflush(outfile);
+        }
+        // Print to terminal
+        else {
+            *inbuf = '\0';
+            printf("%s", outbuf);
+        }
+
         // Reset pointer position 
         inbuf = outbuf;
     }
 
-    fclose(outfile);
+    if (output_file) {
+        fclose(outfile);
+    }
 
     return 0;
 }
