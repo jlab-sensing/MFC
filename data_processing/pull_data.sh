@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 USER="rocketlogger"
 HOSTS=("rocket1-jlab.ucsc.edu" "rocket3-jlab.ucsc.edu")
 REMOTE_PATH="/home/rocketlogger/soil_battery/soil_latest.csv"
@@ -11,4 +13,6 @@ for host in "${HOSTS[@]}"; do
 	fi
 
 	scp -o "PubkeyAcceptedKeyTypes +ssh-rsa" -P 2322 ${USER}@${host}:${REMOTE_PATH} ${LOCAL_PATH}/${host}/soil_latest.csv
+
+	sed -i 's/fnames = glob(".*")/fnames = glob("'${host}'\/")/' twobat_plot.py
 done
