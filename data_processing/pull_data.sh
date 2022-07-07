@@ -14,5 +14,9 @@ for host in "${HOSTS[@]}"; do
 
 	scp -o "PubkeyAcceptedKeyTypes +ssh-rsa" -P 2322 ${USER}@${host}:${REMOTE_PATH} ${LOCAL_PATH}/${host}/soil_latest.csv
 
-	sed -i 's/fnames = glob(".*")/fnames = glob("'${host}'\/")/' twobat_plot.py
+	sed -i 's/fnames = glob(".*")/fnames = glob("soil_*.csv")/' twobat_plot.py
+
+	cd ${host}
+	python3 ../twobat_plot.py
+	cd ..
 done
