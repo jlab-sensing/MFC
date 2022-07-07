@@ -6,5 +6,9 @@ REMOTE_PATH="/home/rocketlogger/soil_battery/soil_latest.csv"
 LOCAL_PATH=`pwd`
 
 for host in "${HOSTS[@]}"; do
-	scp -o "PubkeyAcceptedKeyTypes +ssh-rsa" -P 2322 ${USER}@${host}:${REMOTE_PATH} ${LOCAL_PATH}
+	if [[ ! -d ${LOCAL_PATH}/${host} ]]; then
+		mkdir ${LOCAL_PATH}/${host}
+	fi
+
+	scp -o "PubkeyAcceptedKeyTypes +ssh-rsa" -P 2322 ${USER}@${host}:${REMOTE_PATH} ${LOCAL_PATH}/${host}/soil_latest.csv
 done
