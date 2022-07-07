@@ -17,8 +17,13 @@ import os
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
+# Limits for graphs
+VOLTAGE_LIM = 1
+CURRENT_LIM = 200
+POWER_LIM = 50
+
 if not os.path.exists("soil_data.pkl"):
-    fnames = glob("data/labincubate/rocket4/*_29.csv")
+    fnames = glob("soil_*.csv")
     soil_data = None
 
     for fname in sorted(fnames, key=lambda x: int(x.split('.')[0].split('_')[-1])):
@@ -68,14 +73,14 @@ ax1.set_ylabel('Cell Voltage (V)')
 ax1.plot(mv.index, mv['voltage1'], color=volt_color1, ls=volt_style1)
 ax1.plot(mv.index, mv['voltage2'], color=volt_color2, ls=volt_style2)
 ax1.tick_params(axis='y', labelcolor=volt_color1)
-ax1.set_ylim(0, 0.25)
+ax1.set_ylim(0, VOLTAGE_LIM)
 
 ax2 = ax1.twinx()
 ax2.set_ylabel('Current (μA)')
 ax2.plot(mv.index, 1E6*mv['current1'], color=amp_color1, ls=amp_style1)
 ax2.plot(mv.index, 1E6*mv['current2'], color=amp_color2, ls=amp_style2)
 ax2.tick_params(axis='y', labelcolor=amp_color1)
-ax2.set_ylim(0,60)
+ax2.set_ylim(0, CURRENT_LIM)
 ax1.tick_params(axis='x', which='both', length=0)
 ax2.tick_params(axis='x', which='both', length=0)
 
@@ -95,7 +100,7 @@ ax3.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
 ax3.set_ylabel("Power (uW)")
 ax3.grid(True)
 print('max power: ',max(max(1E6*data['power1']),max(1E6*data['power2'])))
-ax3.set_ylim(0,5)
+ax3.set_ylim(0, POWER_LIM)
 ax3.plot(mv.index, 1E6*mv['power1'], color=volt_color1, ls = volt_style1)
 ax3.plot(mv.index, 1E6*mv['power2'], color=volt_color2, ls = volt_style2)
 ax3.legend(['Cell 1','Cell 2'], loc='upper right', prop={'size': 6})
