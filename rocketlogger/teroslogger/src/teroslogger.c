@@ -28,6 +28,10 @@
 #include <errno.h>   /* Error number definitions */
 #include <termios.h> /* POSIX terminal control definitions */
 #include <time.h>
+#include <error.h>
+#include <errno.h>
+
+#include "ipc.h"
 
 /** Baud rate of serial port */
 #define BAUD_RATE B1200
@@ -56,11 +60,13 @@ int main(int argc, char** argv){
     char *tty_path = NULL;
     /* Output file name */
     char * output_file = NULL;
+    /* Socket filepath */
+    char * socket_file = NULL;
 
     opterr = 0;
 
     int c;
-    while ((c = getopt (argc, argv, "hvqo:")) != -1) {
+    while ((c = getopt (argc, argv, "hvqo:s:")) != -1) {
         switch (c) {
             case 'h':
                 help = 1;
@@ -70,8 +76,12 @@ int main(int argc, char** argv){
                 break;
             case 'q':
                 quiet = 1;
+                break;
             case 'o':
                 output_file = optarg;
+                break;
+            case 's':
+                socket_file = optarg;
                 break;
             case '?':
                 if (optopt == 'o') {
@@ -93,13 +103,14 @@ int main(int argc, char** argv){
     }
     
     if (help) {
-        printf("Usage: %s [-hv] [-o file] [tty]\n", argv[0]);
-        printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file\n\n");
+        printf("Usage: %s [-hvq] [-o file] [-s socket] [tty]\n", argv[0]);
+        printf("Log TEROS-12 Soil Moisture sensor data read from <tty> to csv file or to a Unix Domain Socket. The -q option allows suppression of the data stream being outputted to stdout. Debug messaged enabled with the -v option will still be enabled.\n\n");
         printf("Options:\n");
         printf("  -h\t\tPrints this message\n");
         printf("  -v\t\tVerbose debug statements\n");
         printf("  -q\t\tRun quietly (no stdout)\n");
         printf("  -o <file>\tpath to output log file\n");
+        printf("  -s <socket>\tpath to socket\n");
         return 0;
     }
     
@@ -127,6 +138,10 @@ int main(int argc, char** argv){
 
     if (verbose && output_file) {
         printf("Logging output to %s\n", output_file);
+    }
+    
+    if (verbose && socket_file) {
+        printf("Streaming to socket %s\n", socket_file);
     }
 
     /* ---------------- */
@@ -216,10 +231,18 @@ int main(int argc, char** argv){
         outfile = fopen(output_file, "w");
     }
 
-    if (verbose && output_file) {
-        printf("Logging to %s\n", output_file);
+    // Open socket
+    int socket;
+    if (socket_file) {
+        do { 
+            socket = ipc_client(socket_file);
+            if (verbose && (socket < 0)) {
+                error(0, errno, "Could not open client socket");
+            }
+        }
+        while (socket < 0);
     }
- 
+
     if (verbose) {
         printf("Reading serial...\n");
     }
@@ -272,6 +295,15 @@ int main(int argc, char** argv){
             fflush(outfile);
         }
 
+        // Write to socket
+        if (socket_file) {
+            int num_write;
+            num_write = ipc_write(socket, outbuf, inbuf - outbuf);
+            if (verbose && (num_write < 0)) {
+                error(0, errno, "Could not write to socket");
+            }
+        }
+
         // Print to terminal
         if (!quiet) {
             *inbuf = '\0';
@@ -284,6 +316,10 @@ int main(int argc, char** argv){
 
     if (output_file) {
         fclose(outfile);
+    }
+
+    if (socket_file) {
+        ipc_close(socket);
     }
 
     return 0;
