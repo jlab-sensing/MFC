@@ -1,5 +1,5 @@
-INCLUDES = -I./external/libipc/include
-CFLAGS = -Wall -Wextra -g $(INCLUDES)
+CFLAGS = -Wall -Wextra -g
+CPPFLAGS = -I./external/libipc/include
 LDFLAGS = -L./external/libipc/build
 LDLIBS = -lipc
 
