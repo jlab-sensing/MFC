@@ -8,8 +8,14 @@ OBJS := teroslogger.o
 # Add build prefix
 OBJS := $(addprefix build/,$(OBJS))
 
-.PHONY: all
+.PHONY: all install uninstall
 all: libipc build/teroslogger
+
+install: all
+	cp build/teroslogger /usr/bin
+
+uninstall:
+	rm -f /usr/bin/teroslogger
 
 build/teroslogger: $(OBJS)
 	$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
