@@ -7,7 +7,6 @@
  * 
  * The firmware reads data using SDI from any number of TEROS-12 soil moisture sensors
  * and outputs it over serial. Sensor addresses are configured with @p addrs.
- * The logging interval can be changed with the define @p MEAS_INT.
  * 
  * There is no checking done if the connected sensors do not match what is
  * currently connected. If a address is defined but not connected no data will
@@ -22,9 +21,6 @@
 /** Max Delay between the measure and data commands */
 #define SENSOR_DELAY 1000
 
-/** Period between measurements in ms */
-#define MEAS_INT 10000
-
 /** Pin used for line. Must be interrupt pin. */
 #define DATA_PIN 13
 
@@ -37,7 +33,7 @@ SDISerial sdi_serial_connection(DATA_PIN);
 
 void setup()
 {
-  Serial.begin(1200);
+  Serial.begin(9600);
 
   // Debug string to break up the data stream when testing
   //Serial.println("SDISerial, compiled on " __DATE__ " " __TIME__);
@@ -48,13 +44,21 @@ void setup()
 
 void loop()
 {
-  // Serial.print("samples(ADDR/RAW/TMP/EC): ");
-  for (int i = 0; i < addrs_len; i++) {
-    char * samples = get_measurement(addrs[i]);
-    Serial.print(samples);
-  }
+  // Wait for command
+  while (Serial.available() == 0) {}
 
-  delay(MEAS_INT);
+  String cmd = Serial.readStringUntil('\n');
+  cmd.trim();
+
+  if (cmd == "MEAS") {
+    // Serial.print("samples(ADDR/RAW/TMP/EC): ");
+    for (int i = 0; i < addrs_len; i++) {
+      char * samples = get_measurement(addrs[i]);
+      Serial.print(samples);
+    }
+
+    Serial.println("END");
+  }
 }
 
 /**
