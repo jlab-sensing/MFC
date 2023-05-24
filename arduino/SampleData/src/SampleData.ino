@@ -6,6 +6,9 @@
  * @date 2022-06-30
  */
 
+/** Number of sensors to emulate measurements from */
+#define NUM_SENSORS 2
+
 void setup() {
 	Serial.begin(9600);
 	//Serial.println("SampleData, compiled on " __DATE__ " " __TIME__);
@@ -17,14 +20,17 @@ void setup() {
 }
 
 void loop() {
-	int moisture = random(2400, 3000);
-	int temp = random(20, 30);
-	int conductivity = random(300, 400);
-		
-	char reading[256];
-	sprintf(reading, "0+%d+%d+%d", moisture, temp, conductivity);
+	// Constant values
+	const int moisture = 2500;
+	const int temp = 25;
+	const int conductivity = 0;
 
-	Serial.println(reading);
+	for (int i=0; i > NUM_SENSORS; i++)	{
+		char reading[256];
+		sprintf(reading, "%d+%d+%d+%d", i, moisture, temp, conductivity);
+
+		Serial.println(reading);
+	}
 
 	delay(10000);
 }
