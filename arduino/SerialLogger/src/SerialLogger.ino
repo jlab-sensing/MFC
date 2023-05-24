@@ -24,12 +24,25 @@
 /** Pin used for line. Must be interrupt pin. */
 #define DATA_PIN 13
 
+
+/**
+ * @brief Get measurement from sensor at address
+ * 
+ * @param _addr Address of sensor
+ *
+ * @see https://github.com/joranbeasley/SDISerial/blob/master/examples/SDISerialExample/SDISerialExample.ino
+ * @return Single measurement
+ */
+char * get_measurement(char _addr);
+
+
 /** Array of address characters */
 const char addrs[] = {'0', '1'};
 /** Length of @p addrs */
 const unsigned int addrs_len = 2;
 
 SDISerial sdi_serial_connection(DATA_PIN);
+
 
 void setup()
 {
@@ -61,14 +74,6 @@ void loop()
   }
 }
 
-/**
- * @brief Get measurement from sensor at address
- * 
- * @param _addr Address of sensor
- *
- * @see https://github.com/joranbeasley/SDISerial/blob/master/examples/SDISerialExample/SDISerialExample.ino
- * @return Single measurement
- */
 char * get_measurement(char _addr)
 {
   // Measure query
