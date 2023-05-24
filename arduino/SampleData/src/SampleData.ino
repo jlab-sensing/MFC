@@ -7,7 +7,7 @@
  */
 
 void setup() {
-	Serial.begin(1200);
+	Serial.begin(9600);
 	//Serial.println("SampleData, compiled on " __DATE__ " " __TIME__);
 
 	// Seed random with noise from A0
