@@ -1,0 +1,3 @@
+[submodule "rocketlogger/teroslogger/external/libipc"]
+	path = rocketlogger/teroslogger/external/libipc
+	url = https://github.com/jlab-sensing/libipc.git
