@@ -25,11 +25,21 @@ void loop() {
 	const int temp = 25;
 	const int conductivity = 0;
 
-	for (int i=0; i > NUM_SENSORS; i++)	{
-		char reading[256];
-		sprintf(reading, "%d+%d+%d+%d", i, moisture, temp, conductivity);
+	// Wait for command
+	while (Serial.available() == 0) {}
 
-		Serial.println(reading);
+	String cmd = Serial.readStringUntil('\n');
+	cmd.trim();
+
+	if (cmd == "MEAS") {
+		for (int i=0; i < NUM_SENSORS; i++)	{
+			char reading[256];
+			sprintf(reading, "%d+%d+%d+%d", i, moisture, temp, conductivity);
+
+			Serial.println(reading);
+		}
+
+		Serial.println("END");
 	}
 
 	delay(10000);
