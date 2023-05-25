@@ -14,9 +14,9 @@ void setup() {
 	//Serial.println("SampleData, compiled on " __DATE__ " " __TIME__);
 
 	// Seed random with noise from A0
-	random(analogRead(0));
-
-	delay(3000);
+	//random(analogRead(0));
+	
+	while (!Serial) {}
 }
 
 void loop() {
@@ -41,6 +41,4 @@ void loop() {
 
 		Serial.println("END");
 	}
-
-	delay(10000);
 }
